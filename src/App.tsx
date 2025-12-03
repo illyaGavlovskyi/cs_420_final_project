@@ -1,0 +1,238 @@
+// Main application component with tab routing and state management
+// AIChef: AI Powered Grocery and Meal Planner - HCI Course Project Part 4
+
+import { useState } from 'react';
+import { AppState, PantryItem, DietSettings, TimelineSettings, SavedPreset } from './types';
+import { simulateAIGeneration } from './utils/aiSimulation';
+import InventoryTab from './components/InventoryTab';
+import DietTab from './components/DietTab';
+import TimelineSection from './components/TimelineSection';
+import ShoppingTab from './components/ShoppingTab';
+import MealsTab from './components/MealsTab';
+import CameraTab from './components/CameraTab';
+import APITab from './components/APITab';
+import PresetManager from './components/PresetManager';
+import './styles/App.css';
+
+type TabType = 'inventory' | 'diet' | 'shopping' | 'meals' | 'camera' | 'api';
+
+function App() {
+  const [activeTab, setActiveTab] = useState<TabType>('inventory');
+
+  // Initialize app state
+  const [appState, setAppState] = useState<AppState>({
+    pantryItems: [],
+    dietSettings: {
+      goals: [],
+      customGoals: '',
+      allergies: [],
+      customAllergies: ''
+    },
+    timelineSettings: {
+      planDays: 7,
+      cookingFrequency: 3
+    },
+    generatedMeals: [],
+    groceryList: [],
+    storeSuggestions: [],
+    isGenerating: false,
+    hasGenerated: false
+  });
+
+  // Pantry item handlers (Level 1: Enter Pantry Items with Quick Add)
+  const handleAddPantryItem = (item: Omit<PantryItem, 'id'>) => {
+    const newItem: PantryItem = {
+      ...item,
+      id: `pantry-${Date.now()}-${Math.random()}`
+    };
+    setAppState(prev => ({
+      ...prev,
+      pantryItems: [...prev.pantryItems, newItem]
+    }));
+  };
+
+  const handleEditPantryItem = (id: string, item: Omit<PantryItem, 'id'>) => {
+    setAppState(prev => ({
+      ...prev,
+      pantryItems: prev.pantryItems.map(i =>
+        i.id === id ? { ...item, id } : i
+      )
+    }));
+  };
+
+  const handleDeletePantryItem = (id: string) => {
+    setAppState(prev => ({
+      ...prev,
+      pantryItems: prev.pantryItems.filter(i => i.id !== id)
+    }));
+  };
+
+  // Diet settings handler (Level 1: Set Diet Goals and Allergies)
+  const handleUpdateDiet = (settings: DietSettings) => {
+    setAppState(prev => ({
+      ...prev,
+      dietSettings: settings
+    }));
+  };
+
+  // Timeline settings handler (Level 1: Choose Shopping Timeline and Cooking Frequency)
+  const handleUpdateTimeline = (settings: TimelineSettings) => {
+    setAppState(prev => ({
+      ...prev,
+      timelineSettings: settings
+    }));
+  };
+
+  // Level 1: Generate Grocery List with AI (simulated)
+  const handleGeneratePlan = async () => {
+    setAppState(prev => ({ ...prev, isGenerating: true }));
+
+    // Simulate AI processing delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Run AI simulation
+    const { meals, groceryList, storeSuggestions } = simulateAIGeneration(
+      appState.pantryItems,
+      appState.dietSettings,
+      appState.timelineSettings
+    );
+
+    setAppState(prev => ({
+      ...prev,
+      generatedMeals: meals,
+      groceryList,
+      storeSuggestions,
+      isGenerating: false,
+      hasGenerated: true
+    }));
+
+    // Auto-switch to shopping tab to show results
+    setActiveTab('shopping');
+  };
+
+  // Level 1: Save and Load Presets
+  const handleLoadPreset = (preset: SavedPreset) => {
+    setAppState(prev => ({
+      ...prev,
+      pantryItems: preset.pantryItems,
+      dietSettings: preset.dietSettings,
+      timelineSettings: preset.timelineSettings,
+      // Clear generated data when loading preset
+      generatedMeals: [],
+      groceryList: [],
+      storeSuggestions: [],
+      hasGenerated: false
+    }));
+  };
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <h1>AIChef</h1>
+        <p className="tagline">AI Powered Grocery and Meal Planner</p>
+      </header>
+
+      <nav className="app-nav">
+        <button
+          className={`nav-tab ${activeTab === 'inventory' ? 'active' : ''}`}
+          onClick={() => setActiveTab('inventory')}
+        >
+          Inventory
+        </button>
+        <button
+          className={`nav-tab ${activeTab === 'diet' ? 'active' : ''}`}
+          onClick={() => setActiveTab('diet')}
+        >
+          Diet
+        </button>
+        <button
+          className={`nav-tab ${activeTab === 'shopping' ? 'active' : ''}`}
+          onClick={() => setActiveTab('shopping')}
+        >
+          Shopping
+        </button>
+        <button
+          className={`nav-tab ${activeTab === 'meals' ? 'active' : ''}`}
+          onClick={() => setActiveTab('meals')}
+        >
+          Meals
+        </button>
+        <button
+          className={`nav-tab ${activeTab === 'camera' ? 'active' : ''}`}
+          onClick={() => setActiveTab('camera')}
+        >
+          Camera
+        </button>
+        <button
+          className={`nav-tab ${activeTab === 'api' ? 'active' : ''}`}
+          onClick={() => setActiveTab('api')}
+        >
+          API
+        </button>
+      </nav>
+
+      <main className="app-main">
+        {activeTab === 'inventory' && (
+          <>
+            <InventoryTab
+              pantryItems={appState.pantryItems}
+              onAddItem={handleAddPantryItem}
+              onEditItem={handleEditPantryItem}
+              onDeleteItem={handleDeletePantryItem}
+            />
+            <PresetManager
+              currentPantryItems={appState.pantryItems}
+              currentDietSettings={appState.dietSettings}
+              currentTimelineSettings={appState.timelineSettings}
+              onLoadPreset={handleLoadPreset}
+            />
+          </>
+        )}
+
+        {activeTab === 'diet' && (
+          <>
+            <DietTab
+              dietSettings={appState.dietSettings}
+              onUpdateDiet={handleUpdateDiet}
+            />
+            <TimelineSection
+              timelineSettings={appState.timelineSettings}
+              onUpdateTimeline={handleUpdateTimeline}
+            />
+            <div className="next-step-hint">
+              <p>Ready to see your plan? Go to the Shopping tab and click "Generate"!</p>
+            </div>
+          </>
+        )}
+
+        {activeTab === 'shopping' && (
+          <ShoppingTab
+            groceryList={appState.groceryList}
+            storeSuggestions={appState.storeSuggestions}
+            isGenerating={appState.isGenerating}
+            hasGenerated={appState.hasGenerated}
+            onGenerate={handleGeneratePlan}
+          />
+        )}
+
+        {activeTab === 'meals' && (
+          <MealsTab
+            meals={appState.generatedMeals}
+            hasGenerated={appState.hasGenerated}
+          />
+        )}
+
+        {activeTab === 'camera' && <CameraTab />}
+
+        {activeTab === 'api' && <APITab />}
+      </main>
+
+      <footer className="app-footer">
+        <p>HCI Course Project - Part 4 Prototype</p>
+        <p>All AI behavior is simulated. No backend or real API calls.</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
