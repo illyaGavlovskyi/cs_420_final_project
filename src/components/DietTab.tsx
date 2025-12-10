@@ -21,6 +21,19 @@ const ALLERGY_OPTIONS = [
   { value: 'soy', label: 'Soy' }
 ];
 
+// Feature 10: Advanced filtering options
+const CUISINE_OPTIONS = [
+  { value: 'Asian', label: 'Asian' },
+  { value: 'Mediterranean', label: 'Mediterranean' },
+  { value: 'Italian', label: 'Italian' },
+  { value: 'Mexican', label: 'Mexican' },
+  { value: 'American', label: 'American' },
+  { value: 'Indian', label: 'Indian' },
+  { value: 'Thai', label: 'Thai' },
+  { value: 'Japanese', label: 'Japanese' },
+  { value: 'Greek', label: 'Greek' }
+];
+
 export default function DietTab({ dietSettings, onUpdateDiet }: DietTabProps) {
   const handleGoalToggle = (goal: string) => {
     const newGoals = dietSettings.goals.includes(goal)
@@ -55,6 +68,35 @@ export default function DietTab({ dietSettings, onUpdateDiet }: DietTabProps) {
     onUpdateDiet({
       ...dietSettings,
       customAllergies: value
+    });
+  };
+
+  // Feature 10: Advanced filter handlers
+  const handleCuisineToggle = (cuisine: string) => {
+    const currentCuisines = dietSettings.cuisinePreferences || [];
+    const newCuisines = currentCuisines.includes(cuisine)
+      ? currentCuisines.filter(c => c !== cuisine)
+      : [...currentCuisines, cuisine];
+
+    onUpdateDiet({
+      ...dietSettings,
+      cuisinePreferences: newCuisines
+    });
+  };
+
+  const handleMaxCaloriesChange = (value: string) => {
+    const numValue = value ? parseInt(value) : undefined;
+    onUpdateDiet({
+      ...dietSettings,
+      maxCaloriesPerMeal: numValue
+    });
+  };
+
+  const handleMaxCookingTimeChange = (value: string) => {
+    const numValue = value ? parseInt(value) : undefined;
+    onUpdateDiet({
+      ...dietSettings,
+      maxCookingTime: numValue
     });
   };
 
@@ -117,6 +159,59 @@ export default function DietTab({ dietSettings, onUpdateDiet }: DietTabProps) {
         </div>
       </section>
 
+      {/* Feature 10: Advanced Filtering Options */}
+      <section className="diet-section advanced-filters">
+        <h3>Advanced Filters (Optional)</h3>
+        <p className="section-hint">Narrow down meal suggestions with additional preferences</p>
+
+        <div className="form-group">
+          <label>Cuisine Preferences</label>
+          <div className="checkbox-group cuisine-grid">
+            {CUISINE_OPTIONS.map((option) => (
+              <label key={option.value} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={(dietSettings.cuisinePreferences || []).includes(option.value)}
+                  onChange={() => handleCuisineToggle(option.value)}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+          <small>Leave blank to include all cuisines</small>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="max-calories">Max Calories Per Meal</label>
+            <input
+              id="max-calories"
+              type="number"
+              min="0"
+              step="50"
+              value={dietSettings.maxCaloriesPerMeal || ''}
+              onChange={(e) => handleMaxCaloriesChange(e.target.value)}
+              placeholder="e.g., 600"
+            />
+            <small>Calories per serving</small>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="max-cooking-time">Max Cooking Time (minutes)</label>
+            <input
+              id="max-cooking-time"
+              type="number"
+              min="0"
+              step="5"
+              value={dietSettings.maxCookingTime || ''}
+              onChange={(e) => handleMaxCookingTimeChange(e.target.value)}
+              placeholder="e.g., 30"
+            />
+            <small>Total preparation time</small>
+          </div>
+        </div>
+      </section>
+
       <div className="diet-summary">
         <h4>Current Settings:</h4>
         <p>
@@ -131,6 +226,21 @@ export default function DietTab({ dietSettings, onUpdateDiet }: DietTabProps) {
             ? [...dietSettings.allergies, dietSettings.customAllergies].filter(Boolean).join(', ')
             : 'None selected'}
         </p>
+        {(dietSettings.cuisinePreferences && dietSettings.cuisinePreferences.length > 0) && (
+          <p>
+            <strong>Cuisines:</strong> {dietSettings.cuisinePreferences.join(', ')}
+          </p>
+        )}
+        {dietSettings.maxCaloriesPerMeal && (
+          <p>
+            <strong>Max Calories:</strong> {dietSettings.maxCaloriesPerMeal} per meal
+          </p>
+        )}
+        {dietSettings.maxCookingTime && (
+          <p>
+            <strong>Max Cooking Time:</strong> {dietSettings.maxCookingTime} minutes
+          </p>
+        )}
       </div>
     </div>
   );

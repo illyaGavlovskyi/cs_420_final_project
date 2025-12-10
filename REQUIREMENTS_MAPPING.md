@@ -1,3 +1,4 @@
+
 # Requirements Mapping - AIChef
 
 This document maps each HCI requirement to specific code locations and explains how it's implemented.
@@ -45,21 +46,24 @@ This document maps each HCI requirement to specific code locations and explains 
 
 ---
 
-### 3. Choose Shopping Timeline and Cooking Frequency
+### 3. Choose Shopping Timeline, Cooking Frequency, and Budget
 
 **File:** [src/components/TimelineSection.tsx](src/components/TimelineSection.tsx)
 
 **Implementation:**
-- Lines 13-18: `handlePlanDaysChange()` updates planning duration
-- Lines 20-25: `handleCookingFrequencyChange()` updates cooking frequency
-- Lines 32-45: Dropdown for plan duration (1 week to 1 month)
-- Lines 47-61: Dropdown for cooking frequency (2-7 times per week)
-- Lines 65-71: Summary display of selections
+- Lines 11-16: `handlePlanDaysChange()` updates planning duration
+- Lines 18-23: `handleCookingFrequencyChange()` updates cooking frequency
+- Lines 25-30: `handleBudgetChange()` updates budget constraint
+- Lines 38-51: Dropdown for plan duration (1 week to 1 month)
+- Lines 53-67: Dropdown for cooking frequency (2-7 times per week)
+- Lines 69-80: Number input for maximum budget (USD)
+- Lines 84-88: Summary display of all selections including budget
 
 **User Flow:**
 1. User selects "Plan Duration" from dropdown (e.g., "1 Week")
 2. User selects "Cooking Frequency" from dropdown (e.g., "3 times per week")
-3. Summary shows: "Planning for 7 days with 3 meals per week"
+3. User enters "Maximum Budget" (e.g., $100)
+4. Summary shows: "Planning for 7 days with 3 meals per week and a $100 budget"
 
 ---
 
@@ -81,24 +85,59 @@ This document maps each HCI requirement to specific code locations and explains 
 - Lines 83-92: `isIngredientAllowed()` checks for allergens
 - Lines 95-103: `recipeMatchesDiet()` filters recipes by diet goals
 - Lines 106-109: `recipeContainsAllergens()` filters recipes by allergies
-- Lines 112-159: `simulateAIGeneration()` main function that:
+- Lines 112-162: `simulateAIGeneration()` main function that:
   - Filters recipes based on diet and allergies
   - Selects number of meals based on cooking frequency
   - Calculates required ingredients
   - Subtracts pantry items from grocery list
+  - Calculates estimated cost via `calculateEstimatedCost()`
   - Generates store suggestions
+  - Returns meals, groceryList, storeSuggestions, estimatedCost, and budget
+- Lines 164-193: `calculateEstimatedCost()` function:
+  - Mock pricing based on category (Produce: $2.50, Protein: $8.00, Grains: $3.50, Dairy: $4.00)
+  - Multiplies quantity by price per category
+  - Returns total cost rounded to 2 decimal places
 
 **User Flow:**
 1. User clicks "Generate Shopping List & Meal Plan"
 2. Loading spinner appears for 2 seconds (simulated AI processing)
-3. Grocery list appears organized by categories:
+3. Budget Overview appears showing:
+   - Estimated Cost (calculated from grocery list)
+   - User's Budget (from timeline settings)
+   - Status: "Under budget by $X" or "Over budget by $X" with color coding
+4. Grocery list appears organized by categories:
    - Produce
    - Protein
    - Grains
    - Dairy
    - Other
-4. Only items NOT in pantry are shown
-5. Store suggestions appear below
+5. Only items NOT in pantry are shown
+6. Store suggestions appear below
+
+---
+
+### 4a. Budget Tracking and Display
+
+**Files:**
+- [src/components/ShoppingTab.tsx](src/components/ShoppingTab.tsx) (lines 72-92)
+- [src/styles/App.css](src/styles/App.css) (lines 549-606)
+
+**Implementation:**
+- Budget Overview section displays immediately after generation
+- Three-row layout showing:
+  1. Estimated Cost with dollar amount
+  2. User's Budget with dollar amount
+  3. Status with difference calculation
+- Dynamic CSS classes:
+  - `.under-budget`: Green styling when cost ≤ budget
+  - `.over-budget`: Red styling when cost > budget
+- Visual indicators via border colors matching status
+
+**User Flow:**
+1. After generation completes, Budget Overview appears first
+2. User sees estimated cost vs. their budget at a glance
+3. Color-coded status provides immediate feedback
+4. Can adjust budget in Timeline settings and regenerate if needed
 
 ---
 

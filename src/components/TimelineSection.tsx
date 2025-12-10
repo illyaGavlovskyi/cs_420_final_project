@@ -22,10 +22,19 @@ export default function TimelineSection({ timelineSettings, onUpdateTimeline }: 
     });
   };
 
+  const handleBudgetChange = (budget: number) => {
+    // Ensure budget is not negative
+    const validBudget = Math.max(0, budget);
+    onUpdateTimeline({
+      ...timelineSettings,
+      budget: validBudget
+    });
+  };
+
   return (
     <div className="timeline-section">
       <h3>Shopping Timeline & Cooking Frequency</h3>
-      <p>How long should we plan for and how often do you cook?</p>
+      <p>How long should we plan for, how often do you cook, and what's your budget?</p>
 
       <div className="timeline-controls">
         <div className="form-group">
@@ -58,12 +67,26 @@ export default function TimelineSection({ timelineSettings, onUpdateTimeline }: 
             <option value={7}>7 times per week</option>
           </select>
         </div>
+
+        <div className="form-group">
+          <label htmlFor="budget">Maximum Budget (USD)</label>
+          <input
+            id="budget"
+            type="number"
+            min="0"
+            step="5"
+            value={timelineSettings.budget}
+            onChange={(e) => handleBudgetChange(parseInt(e.target.value) || 0)}
+            placeholder="e.g., 100"
+          />
+        </div>
       </div>
 
       <div className="timeline-summary">
         <p>
           Planning for <strong>{timelineSettings.planDays} days</strong> with{' '}
-          <strong>{timelineSettings.cookingFrequency} meals per week</strong>
+          <strong>{timelineSettings.cookingFrequency} meals per week</strong> and a{' '}
+          <strong>${timelineSettings.budget}</strong> budget
         </p>
       </div>
     </div>

@@ -76,10 +76,11 @@ Actions to perform:
 - [ ] Check "Dairy" under Allergies
 - [ ] Show summary section updates
 - [ ] Scroll down to Timeline section
-- [ ] Say: "Next I'll set my shopping timeline"
+- [ ] Say: "Next I'll set my shopping timeline and budget"
 - [ ] Select "1 Week" from Plan Duration dropdown
 - [ ] Select "3 times per week" from Cooking Frequency dropdown
-- [ ] Show summary: "Planning for 7 days with 3 meals per week"
+- [ ] Enter "100" in Maximum Budget field
+- [ ] Show summary: "Planning for 7 days with 3 meals per week and a $100 budget"
 - [ ] Point to green hint box: "Ready to generate plan"
 
 Say: "The app will remember these preferences and filter recipes accordingly"
@@ -97,7 +98,12 @@ Actions to perform:
 - [ ] Say: "The AI is analyzing my pantry, diet, and cooking frequency"
 - [ ] Wait for results (2 seconds)
 - [ ] Say: "Great! Here's my personalized grocery list"
-- [ ] Scroll through categories:
+- [ ] Point to Budget Overview section
+- [ ] Read aloud: "Estimated Cost: $X.XX"
+- [ ] Read aloud: "Your Budget: $100.00"
+- [ ] Point to Status: "Under budget by $X.XX" (or "Over budget")
+- [ ] Say: "The app shows if I'm within budget at a glance"
+- [ ] Scroll through grocery categories:
   - [ ] Point to Produce section
   - [ ] Point to Protein section
   - [ ] Point to Grains section

@@ -30,11 +30,13 @@ function App() {
     },
     timelineSettings: {
       planDays: 7,
-      cookingFrequency: 3
+      cookingFrequency: 3,
+      budget: 100
     },
     generatedMeals: [],
     groceryList: [],
     storeSuggestions: [],
+    estimatedCost: 0,
     isGenerating: false,
     hasGenerated: false
   });
@@ -91,7 +93,7 @@ function App() {
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Run AI simulation
-    const { meals, groceryList, storeSuggestions } = simulateAIGeneration(
+    const { meals, groceryList, storeSuggestions, estimatedCost } = simulateAIGeneration(
       appState.pantryItems,
       appState.dietSettings,
       appState.timelineSettings
@@ -102,6 +104,7 @@ function App() {
       generatedMeals: meals,
       groceryList,
       storeSuggestions,
+      estimatedCost,
       isGenerating: false,
       hasGenerated: true
     }));
@@ -121,7 +124,48 @@ function App() {
       generatedMeals: [],
       groceryList: [],
       storeSuggestions: [],
+      estimatedCost: 0,
       hasGenerated: false
+    }));
+  };
+
+  // Feature 6: Meal Plan Customization - Regenerate individual meal
+  const handleRegenerateMeal = (mealId: string) => {
+    // Find a different meal from the recipe database
+    const { meals } = simulateAIGeneration(
+      appState.pantryItems,
+      appState.dietSettings,
+      appState.timelineSettings
+    );
+
+    // Find the meal to replace
+    const mealToReplace = appState.generatedMeals.find(m => m.id === mealId);
+    if (!mealToReplace) return;
+
+    // Find a new meal that isn't already in the plan
+    const existingTitles = appState.generatedMeals.map(m => m.title);
+    const newMeal = meals.find(m => !existingTitles.includes(m.title));
+
+    if (newMeal) {
+      // Replace with new meal but keep the same day
+      const updatedMeal = { ...newMeal, id: mealId, dayOfWeek: mealToReplace.dayOfWeek };
+      const updatedMeals = appState.generatedMeals.map(m =>
+        m.id === mealId ? updatedMeal : m
+      );
+
+      setAppState(prev => ({
+        ...prev,
+        generatedMeals: updatedMeals
+      }));
+    }
+  };
+
+  // Feature 6: Delete a meal from the plan
+  const handleDeleteMeal = (mealId: string) => {
+    const updatedMeals = appState.generatedMeals.filter(m => m.id !== mealId);
+    setAppState(prev => ({
+      ...prev,
+      generatedMeals: updatedMeals
     }));
   };
 
@@ -132,40 +176,46 @@ function App() {
         <p className="tagline">AI Powered Grocery and Meal Planner</p>
       </header>
 
-      <nav className="app-nav">
+      <nav className="app-nav" role="navigation" aria-label="Main navigation">
         <button
           className={`nav-tab ${activeTab === 'inventory' ? 'active' : ''}`}
           onClick={() => setActiveTab('inventory')}
+          aria-current={activeTab === 'inventory' ? 'page' : undefined}
         >
           Inventory
         </button>
         <button
           className={`nav-tab ${activeTab === 'diet' ? 'active' : ''}`}
           onClick={() => setActiveTab('diet')}
+          aria-current={activeTab === 'diet' ? 'page' : undefined}
         >
           Diet
         </button>
         <button
           className={`nav-tab ${activeTab === 'shopping' ? 'active' : ''}`}
           onClick={() => setActiveTab('shopping')}
+          aria-current={activeTab === 'shopping' ? 'page' : undefined}
         >
           Shopping
         </button>
         <button
           className={`nav-tab ${activeTab === 'meals' ? 'active' : ''}`}
           onClick={() => setActiveTab('meals')}
+          aria-current={activeTab === 'meals' ? 'page' : undefined}
         >
           Meals
         </button>
         <button
           className={`nav-tab ${activeTab === 'camera' ? 'active' : ''}`}
           onClick={() => setActiveTab('camera')}
+          aria-current={activeTab === 'camera' ? 'page' : undefined}
         >
           Camera
         </button>
         <button
           className={`nav-tab ${activeTab === 'api' ? 'active' : ''}`}
           onClick={() => setActiveTab('api')}
+          aria-current={activeTab === 'api' ? 'page' : undefined}
         >
           API
         </button>
@@ -209,6 +259,8 @@ function App() {
           <ShoppingTab
             groceryList={appState.groceryList}
             storeSuggestions={appState.storeSuggestions}
+            estimatedCost={appState.estimatedCost}
+            budget={appState.timelineSettings.budget}
             isGenerating={appState.isGenerating}
             hasGenerated={appState.hasGenerated}
             onGenerate={handleGeneratePlan}
@@ -219,6 +271,8 @@ function App() {
           <MealsTab
             meals={appState.generatedMeals}
             hasGenerated={appState.hasGenerated}
+            onRegenerateMeal={handleRegenerateMeal}
+            onDeleteMeal={handleDeleteMeal}
           />
         )}
 

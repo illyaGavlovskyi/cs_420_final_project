@@ -12,8 +12,9 @@ AIChef helps users save time and reduce waste by planning meals and grocery list
 ### Level 1 Requirements (All Implemented)
 - **Enter Pantry Items with Quick Add**: Add items manually or use quick-add buttons for common ingredients
 - **Set Diet Goals and Allergies**: Select from common options or add custom preferences
-- **Choose Shopping Timeline and Cooking Frequency**: Configure how many days to plan for and cooking frequency
-- **Generate Grocery List with AI**: Simulated AI generates personalized shopping list and meal plan
+- **Choose Shopping Timeline, Cooking Frequency, and Budget**: Configure how many days to plan for, cooking frequency, and maximum budget
+- **Generate Grocery List with AI**: Simulated AI generates personalized shopping list and meal plan with cost estimates
+- **Budget Tracking**: View estimated costs vs. your budget with visual indicators
 - **Save a Preset for Next Time**: Save and load configurations using localStorage
 
 ### Level 2 Requirements (Implemented with Mock Data)

@@ -27,32 +27,73 @@ export default function InventoryTab({ pantryItems, onAddItem, onEditItem, onDel
   const [quantity, setQuantity] = useState('1');
   const [unit, setUnit] = useState('unit');
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // Feature 5: Pantry Management Enhancements
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'name' | 'quantity'>('name');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
 
+    // Validation
     if (!name.trim()) {
-      alert('Please enter an item name');
+      setError('Please enter an item name');
+      return;
+    }
+
+    const parsedQuantity = parseFloat(quantity);
+    if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
+      setError('Quantity must be a positive number');
+      return;
+    }
+
+    if (!unit.trim()) {
+      setError('Please select a unit');
+      return;
+    }
+
+    // Check for duplicate items (case-insensitive)
+    const isDuplicate = pantryItems.some(
+      item => item.name.toLowerCase() === name.trim().toLowerCase() && item.id !== editingId
+    );
+
+    if (isDuplicate) {
+      setError(`"${name.trim()}" is already in your pantry. Please edit the existing item instead.`);
       return;
     }
 
     const itemData = {
       name: name.trim(),
-      quantity: parseFloat(quantity) || 1,
+      quantity: parsedQuantity,
       unit: unit.trim()
     };
 
-    if (editingId) {
-      onEditItem(editingId, itemData);
-      setEditingId(null);
-    } else {
-      onAddItem(itemData);
-    }
+    try {
+      if (editingId) {
+        onEditItem(editingId, itemData);
+        setSuccessMessage(`Updated "${itemData.name}" successfully!`);
+        setEditingId(null);
+      } else {
+        onAddItem(itemData);
+        setSuccessMessage(`Added "${itemData.name}" to your pantry!`);
+      }
 
-    // Reset form
-    setName('');
-    setQuantity('1');
-    setUnit('unit');
+      // Reset form
+      setName('');
+      setQuantity('1');
+      setUnit('unit');
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (err) {
+      setError('Failed to save item. Please try again.');
+    }
   };
 
   const handleQuickAdd = (quickItem: { name: string; unit: string }) => {
@@ -72,12 +113,82 @@ export default function InventoryTab({ pantryItems, onAddItem, onEditItem, onDel
     setName('');
     setQuantity('1');
     setUnit('unit');
+    setError(null);
   };
+
+  const handleDelete = (item: PantryItem) => {
+    if (window.confirm(`Are you sure you want to delete "${item.name}" from your pantry?`)) {
+      onDeleteItem(item.id);
+      setSuccessMessage(`Removed "${item.name}" from pantry`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+    }
+  };
+
+  // Feature 5: Bulk delete functionality
+  const handleBulkDelete = () => {
+    if (selectedIds.size === 0) {
+      setError('Please select items to delete');
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+
+    if (window.confirm(`Are you sure you want to delete ${selectedIds.size} item(s) from your pantry?`)) {
+      selectedIds.forEach(id => onDeleteItem(id));
+      setSelectedIds(new Set());
+      setSuccessMessage(`Removed ${selectedIds.size} item(s) from pantry`);
+      setTimeout(() => setSuccessMessage(null), 3000);
+    }
+  };
+
+  const handleSelectItem = (id: string) => {
+    const newSelected = new Set(selectedIds);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedIds(newSelected);
+  };
+
+  const handleSelectAll = () => {
+    if (selectedIds.size === filteredAndSortedItems.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredAndSortedItems.map(item => item.id)));
+    }
+  };
+
+  // Feature 5: Filter and sort pantry items
+  const filteredAndSortedItems = pantryItems
+    .filter(item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortBy === 'name') {
+        const comparison = a.name.localeCompare(b.name);
+        return sortOrder === 'asc' ? comparison : -comparison;
+      } else {
+        const comparison = a.quantity - b.quantity;
+        return sortOrder === 'asc' ? comparison : -comparison;
+      }
+    });
 
   return (
     <div className="inventory-tab">
       <h2>Pantry Inventory</h2>
       <p>Add items you already have at home</p>
+
+      {/* Error and Success Messages */}
+      {error && (
+        <div className="alert alert-error" role="alert">
+          <strong>Error:</strong> {error}
+        </div>
+      )}
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
+        </div>
+      )}
 
       <div className="quick-add-section">
         <h3>Quick Add</h3>
@@ -150,13 +261,77 @@ export default function InventoryTab({ pantryItems, onAddItem, onEditItem, onDel
       </form>
 
       <div className="pantry-list">
-        <h3>Current Pantry Items ({pantryItems.length})</h3>
+        <div className="pantry-list-header">
+          <h3>Current Pantry Items ({pantryItems.length})</h3>
+
+          {/* Feature 5: Search and Sort Controls */}
+          {pantryItems.length > 0 && (
+            <div className="pantry-controls">
+              <div className="search-box">
+                <label htmlFor="search-items">Search:</label>
+                <input
+                  id="search-items"
+                  type="text"
+                  placeholder="Search items..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="search-input"
+                />
+              </div>
+
+              <div className="sort-controls">
+                <label htmlFor="sort-by">Sort by:</label>
+                <select
+                  id="sort-by"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as 'name' | 'quantity')}
+                  className="sort-select"
+                >
+                  <option value="name">Name</option>
+                  <option value="quantity">Quantity</option>
+                </select>
+
+                <button
+                  type="button"
+                  onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                  className="sort-order-btn"
+                  aria-label={`Sort ${sortOrder === 'asc' ? 'descending' : 'ascending'}`}
+                >
+                  {sortOrder === 'asc' ? '↑' : '↓'}
+                </button>
+              </div>
+
+              {/* Feature 5: Bulk Actions */}
+              <div className="bulk-actions">
+                <button
+                  type="button"
+                  onClick={handleBulkDelete}
+                  className="btn-bulk-delete"
+                  disabled={selectedIds.size === 0}
+                >
+                  Delete Selected ({selectedIds.size})
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
         {pantryItems.length === 0 ? (
           <p className="empty-message">No items in pantry. Add some items to get started!</p>
+        ) : filteredAndSortedItems.length === 0 ? (
+          <p className="empty-message">No items match your search.</p>
         ) : (
           <table className="pantry-table">
             <thead>
               <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.size === filteredAndSortedItems.length}
+                    onChange={handleSelectAll}
+                    aria-label="Select all items"
+                  />
+                </th>
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Unit</th>
@@ -164,8 +339,16 @@ export default function InventoryTab({ pantryItems, onAddItem, onEditItem, onDel
               </tr>
             </thead>
             <tbody>
-              {pantryItems.map((item) => (
-                <tr key={item.id}>
+              {filteredAndSortedItems.map((item) => (
+                <tr key={item.id} className={selectedIds.has(item.id) ? 'selected' : ''}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(item.id)}
+                      onChange={() => handleSelectItem(item.id)}
+                      aria-label={`Select ${item.name}`}
+                    />
+                  </td>
                   <td>{item.name}</td>
                   <td>{item.quantity}</td>
                   <td>{item.unit}</td>
@@ -178,7 +361,7 @@ export default function InventoryTab({ pantryItems, onAddItem, onEditItem, onDel
                     </button>
                     <button
                       className="btn-delete"
-                      onClick={() => onDeleteItem(item.id)}
+                      onClick={() => handleDelete(item)}
                     >
                       Delete
                     </button>
