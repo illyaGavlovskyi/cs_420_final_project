@@ -1,3 +1,62 @@
+# CS 420/620 Human-Computer Interaction
+# Project Part 4: Prototype Implementation - Documentation
+
+**Project**: AIChef - AI Powered Grocery and Meal Planner
+**Student Name**: Illya Gavlovskyi
+**Team Number**: T19
+**Due Date**: Friday December 12, 2025 at 11:59 pm
+
+---
+
+## Table of Contents
+1. [Code Summary (1-2 Pages)](#1-code-summary)
+2. [AI Tools Usage Statement](#2-ai-tools-usage-statement)
+3. [Submission Instructions](#3-submission-instructions)
+4. [Team Contributions](#4-team-contributions-teams-of-2-only)
+
+---
+
+# 1. Code Summary
+
+## 1.1 Project Overview
+
+**Project Name**: AIChef - AI Powered Grocery and Meal Planner
+**Technology Stack**: React 18 + TypeScript + Vite
+**Architecture**: Single-page application (SPA) with client-side logic only
+**Total Lines of Code**: Approximately 2,500+ lines across 13 source files
+
+AIChef helps users save time and reduce waste by planning meals and grocery lists based on three main inputs:
+1. Pantry items they already have
+2. Diet goals and allergies
+3. Shopping timeline, cooking frequency, and budget
+
+## 1.2 Code Organization & Structure
+
+```
+cs_420_final_project/
+├── src/
+│   ├── components/          # React UI components (8 files)
+│   │   ├── APITab.tsx       # Placeholder for future API integrations
+│   │   ├── CameraTab.tsx    # Placeholder for camera feature
+│   │   ├── DietTab.tsx      # Diet goals and allergy selection
+│   │   ├── InventoryTab.tsx # Pantry management with quick-add
+│   │   ├── MealsTab.tsx     # Displays generated meal plan
+│   │   ├── NutritionTab.tsx # Nutrition tracking interface
+│   │   ├── PresetManager.tsx# Save/load preset configurations
+│   │   ├── ShoppingTab.tsx  # Grocery list and store suggestions
+│   │   └── TimelineSection.tsx # Timeline and budget settings
+│   ├── utils/
+│   │   ├── aiSimulation.ts  # Mock AI engine with recipe filtering (~1500 lines)
+│   │   └── localStorage.ts  # Preset save/load functionality
+│   ├── App.tsx              # Main app container with state management
+│   ├── main.tsx             # Application entry point
+│   └── types.ts             # TypeScript type definitions
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
 
 ## 1.3 Core Functionality Implementation
 
@@ -89,7 +148,7 @@ The full architecture. The visual layout. Choice of features. Manual testing and
 
 ## 2.3 Reflection on AI Tool Usage
 
-AI tools helped save time and supported learning. They improved productivity and reduced errors. I still needed to review everything closely because suggestions do not always fit the needs of the project. Understanding React, TypeScript, and HCI ideas was important because this allowed me to direct the AI tools clearly.
+AI tools helped me save time and supported learning i was able to add more features, improve layouts and visuals at a faster rate. They improved productivity and reduced errors. I still needed to review everything closely because suggestions do not always fit the needs of the project. Understanding React, TypeScript, and HCI ideas was important because this allowed me to direct the AI tools clearly.
 
 ## 2.4 Ethical Considerations
 
@@ -97,39 +156,9 @@ All generated work was reviewed and understood before use. Attribution is includ
 
 ---
 
-# 3. Submission Instructions
+# 3. Team Contributions
 
-## 3.1 Creating the ZIP File
-
-Replace XX with your team number when naming the archive.  
-Remove node_modules and dist before zipping.
-
-Include: source files, documentation, configuration files.  
-Exclude: node_modules, dist, git folders.
-
-## 3.2 Submitting to Canvas
-
-Files under 20 MB can be uploaded directly.  
-Larger files must be shared from a cloud drive with a viewable link.
-
-## 3.3 Pre Submission Checklist
-
-Confirm your name and team number are filled in this document.  
-Confirm node_modules is removed.  
-Confirm ZIP name follows format.  
-Confirm the file extracts correctly.
-
----
-
-# 4. Team Contributions (Teams of 2 Only)
-
-If you are working alone you may delete this section.
-
----
-
-# Final Checklist
-
-Name filled in. Team number filled in. All sections complete. ZIP created. ZIP submitted.
+I worked alone
 
 ---
 
