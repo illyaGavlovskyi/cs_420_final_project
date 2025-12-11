@@ -71,8 +71,6 @@ Created documentation drafts from descriptions I provided.
 Helped adjust interface layout after I described the structure I wanted.  
 Debugged issues in `PresetManager.tsx`.
 
-**Percentage Assisted**: About forty percent of the code and documentation tasks had some level of AI support.
-
 ### GitHub Copilot  
 **Link**: https://github.com/features/copilot
 
@@ -86,8 +84,6 @@ Copilot filled routine patterns like JSX layouts and repeated CSS structures. It
 
 **How It Helped**:  
 ChatGPT supported planning and problem solving. It helped think through UI flow, color use, and feature structure after I explained my design choices. It also helped with algorithm ideas for budget tracking and list creation and fixed TypeScript and Vite errors.
-
-**Percentage Assisted**: About fifteen percent.
 
 ## 2.2 What Was Not AI Assisted
 
