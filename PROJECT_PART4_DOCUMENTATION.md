@@ -77,8 +77,6 @@ Debugged issues in `PresetManager.tsx`.
 **How It Helped**:  
 Copilot filled routine patterns like JSX layouts and repeated CSS structures. It supported recipe data entry and small utility functions. It helped inside the structure that I had already created.
 
-**Percentage Assisted**: About twenty percent.
-
 ### ChatGPT  
 **Link**: https://chat.openai.com
 
