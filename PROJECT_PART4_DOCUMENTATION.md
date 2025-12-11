@@ -57,7 +57,6 @@ cs_420_final_project/
 └── vite.config.ts
 ```
 
-
 ## 1.3 Core Functionality Implementation
 
 ### State Management  
@@ -86,11 +85,11 @@ Users can save and load presets. Uses browser localStorage for persistence.
 ## 1.4 Requirements Fulfillment
 
 ### Level 1 Requirements  
-All Level 1 requirements have been implemented.  
+All Level 1 requirements have been implemented.
 Pantry input. Diet and allergy selection. Timeline values. Cooking frequency. Budget limits. Grocery list generation. Presets.
 
 ### Level 2 Requirements  
-Two advanced features have been added using mock data.  
+Two advanced features have been added using mock data.
 Meal suggestions reduce waste by preferring overlapping ingredients. Store split suggestions reduce cost.
 
 ### Extra Features  
@@ -102,14 +101,14 @@ The project uses TypeScript for type safety. Each feature is placed in its own c
 
 ## 1.6 Known Limitations and Future Work
 
-Limitations include local only data and no real AI generation. The recipe database is small and prices are estimates.  
+Limitations include local only data and no real AI generation. The recipe database is small and prices are estimates.
 Future plans include camera ingredient recognition, full OpenAI recipe generation, real time store price comparison, and exporting lists to mobile devices.
 
 ## 1.7 Build and Deployment
 
-Development: `npm run dev`  
-Production build: `npm run build`  
-Preview build: `npm run preview`  
+Development: `npm run dev`
+Production build: `npm run build`
+Preview build: `npm run preview`
 
 ---
 
@@ -117,17 +116,17 @@ Preview build: `npm run preview`
 
 ## 2.1 AI Tools Used
 
-### Claude Code by Anthropic  
+### Claude Code by Anthropic
 **Link**: https://claude.ai/claude-code
 
 **How It Helped**:  
-Claude supported me while I made many design decisions for this project. I guided the structure of the interface, the look of each feature, and the way the documentation should be organized. Claude handled heavy lifting after I explained my intentions. I used it to shape the early form of components, write feature drafts, and explore UI ideas that I later refined. I also used it for debugging and code generation.  
+Claude supported me while I made many design decisions for this project. I guided the structure of the interface, the look of each feature, and the way the documentation should be organized. Claude handled heavy lifting after I explained my intentions. I used it to shape the early form of components, write feature drafts, and explore UI ideas that I later refined. I also used it for debugging and code generation.
 I always directed it with detailed prompts about how the feature should behave and how the UI should look and feel.
 
-**Specific Examples**:  
-Generated early versions of `aiSimulation.ts`.  
-Created documentation drafts from descriptions I provided.  
-Helped adjust interface layout after I described the structure I wanted.  
+**Specific Examples**:
+Generated early versions of `aiSimulation.ts`.
+Created documentation drafts from descriptions I provided.
+Helped adjust interface layout after I described the structure I wanted.
 Debugged issues in `PresetManager.tsx`.
 
 ### GitHub Copilot  
@@ -162,7 +161,7 @@ I worked alone
 
 ---
 
-**Student Signature**: Illya Gavlovskyi  
+**Student Signature**: Illya Gavlovskyi
 **Date**: December 11, 2025
-**Course**: CS 420/620 Human Computer Interaction  
+**Course**: CS 420/620 Human Computer Interaction
 **Instructor**: Dr. Sergiu Dascalu
