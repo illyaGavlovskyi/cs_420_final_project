@@ -9,12 +9,13 @@ import DietTab from './components/DietTab';
 import TimelineSection from './components/TimelineSection';
 import ShoppingTab from './components/ShoppingTab';
 import MealsTab from './components/MealsTab';
+import NutritionTab from './components/NutritionTab';
 import CameraTab from './components/CameraTab';
 import APITab from './components/APITab';
 import PresetManager from './components/PresetManager';
 import './styles/App.css';
 
-type TabType = 'inventory' | 'diet' | 'shopping' | 'meals' | 'camera' | 'api';
+type TabType = 'inventory' | 'diet' | 'shopping' | 'meals' | 'nutrition' | 'camera' | 'api';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('inventory');
@@ -206,6 +207,13 @@ function App() {
           Meals
         </button>
         <button
+          className={`nav-tab ${activeTab === 'nutrition' ? 'active' : ''}`}
+          onClick={() => setActiveTab('nutrition')}
+          aria-current={activeTab === 'nutrition' ? 'page' : undefined}
+        >
+          Nutrition
+        </button>
+        <button
           className={`nav-tab ${activeTab === 'camera' ? 'active' : ''}`}
           onClick={() => setActiveTab('camera')}
           aria-current={activeTab === 'camera' ? 'page' : undefined}
@@ -273,6 +281,13 @@ function App() {
             hasGenerated={appState.hasGenerated}
             onRegenerateMeal={handleRegenerateMeal}
             onDeleteMeal={handleDeleteMeal}
+          />
+        )}
+
+        {activeTab === 'nutrition' && (
+          <NutritionTab
+            meals={appState.generatedMeals}
+            hasGenerated={appState.hasGenerated}
           />
         )}
 

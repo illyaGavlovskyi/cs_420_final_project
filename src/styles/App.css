@@ -1911,3 +1911,773 @@ textarea:focus-visible {
     width: fit-content;
   }
 }
+
+/* ===================== */
+/* Feature 11: Weekly Nutrition Analytics */
+/* ===================== */
+
+.nutrition-tab {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nutrition-intro {
+  color: #718096;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.nutrition-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.nutrition-section h3 {
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+/* Daily Averages Cards */
+.nutrition-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.nutrition-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nutrition-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.nutrition-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.nutrition-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.nutrition-label {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+/* Specific card colors */
+.calories-card {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.protein-card {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.carbs-card {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.fat-card {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+/* Macronutrient Distribution */
+.macro-bars {
+  margin-top: 1.5rem;
+}
+
+.macro-bar-item {
+  margin-bottom: 1.5rem;
+}
+
+.macro-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.macro-name {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+.macro-percentage {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.macro-bar {
+  background-color: #e2e8f0;
+  border-radius: 10px;
+  height: 28px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.macro-bar-fill {
+  height: 100%;
+  transition: width 0.6s ease;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.protein-fill {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.carbs-fill {
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.fat-fill {
+  background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
+}
+
+.macro-total {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #718096;
+  font-weight: 500;
+}
+
+.macro-info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f7fafc;
+  border-left: 4px solid var(--primary-color);
+  border-radius: 4px;
+}
+
+.macro-info p {
+  margin: 0;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+/* Weekly Totals Grid */
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.total-item {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid #e2e8f0;
+  transition: border-color 0.2s ease;
+}
+
+.total-item:hover {
+  border-color: var(--primary-color);
+}
+
+.total-label {
+  color: #718096;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.total-value {
+  color: #2d3748;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Micronutrients Grid */
+.micronutrient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.micronutrient-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #f7fafc;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.micronutrient-item:hover {
+  background: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.micro-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.micro-info {
+  flex: 1;
+}
+
+.micro-name {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.micro-value {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.micro-hint {
+  color: #a0aec0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Health Insights */
+.insights-list {
+  margin-top: 1.5rem;
+}
+
+.insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.insight-item.positive {
+  background-color: #f0fff4;
+  border-left: 4px solid #48bb78;
+  color: #22543d;
+}
+
+.insight-item.warning {
+  background-color: #fffaf0;
+  border-left: 4px solid #ed8936;
+  color: #7c2d12;
+}
+
+.insight-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.insight-text {
+  flex: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nutrition-section {
+    padding: 1.5rem;
+  }
+
+  .nutrition-cards {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .nutrition-card {
+    padding: 1.5rem;
+  }
+
+  .nutrition-value {
+    font-size: 1.75rem;
+  }
+
+  .totals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .total-value {
+    font-size: 1.5rem;
+  }
+
+  .micronutrient-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .macro-bar-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* ============================================================
+   Feature 12: Enhanced Preset System Styles
+   ============================================================ */
+
+/* Preset Manager Layout */
+.preset-manager {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+.preset-manager h3 {
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+/* Preset Actions */
+.preset-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Save Dialog Enhancements */
+.save-dialog {
+  background-color: #f8f9fa;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.save-dialog .form-group {
+  margin-bottom: 1rem;
+}
+
+.save-dialog textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.save-dialog textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+}
+
+/* Preset Filter */
+.preset-filter {
+  background-color: #f7fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.preset-filter label {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.preset-filter select {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+/* Enhanced Preset Cards */
+.preset-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.preset-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.15);
+  transform: translateY(-2px);
+}
+
+.preset-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.preset-header h4 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1.25rem;
+}
+
+/* Category Badge */
+.preset-category-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preset-category-badge.large {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Preset Description */
+.preset-description {
+  color: #4a5568;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0.75rem 0;
+  font-style: italic;
+}
+
+/* Preset Stats */
+.preset-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.preset-stats span {
+  font-size: 0.9rem;
+  color: #718096;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Preset Actions Group */
+.preset-actions-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.preset-actions-group button {
+  flex: 1;
+  min-width: 100px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* New Button Styles */
+.btn-preview {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-preview:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-export {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-export:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+}
+
+/* Preview Modal */
+.preview-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.preview-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  color: white;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.preview-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-preview {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.close-preview:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.preview-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.preview-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.preview-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.preview-section h4 {
+  margin: 0 0 1rem 0;
+  color: var(--text-dark);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.preview-section ul li {
+  padding: 0.5rem 0;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview-section ul li::before {
+  content: "•";
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Preview Tags */
+.preview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.preview-tag {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: #e6f7ff;
+  color: #0066cc;
+  border: 1px solid #b3d9ff;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.preview-tag.warning {
+  background-color: #fff5e6;
+  color: #cc8800;
+  border-color: #ffd699;
+}
+
+/* Preview Pantry Grid */
+.preview-pantry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.preview-pantry-item {
+  padding: 0.75rem;
+  background-color: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview-pantry-item::before {
+  content: "📦";
+  font-size: 1rem;
+}
+
+/* Preview Actions */
+.preview-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #f7fafc;
+  border-top: 2px solid #e2e8f0;
+}
+
+.preview-actions button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+}
+
+/* Responsive Design for Preset Manager */
+@media (max-width: 768px) {
+  .preset-actions {
+    flex-direction: column;
+  }
+
+  .preset-actions button {
+    width: 100%;
+  }
+
+  .preset-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .preset-filter select {
+    width: 100%;
+  }
+
+  .preset-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .preset-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .preset-actions-group {
+    flex-direction: column;
+  }
+
+  .preset-actions-group button {
+    width: 100%;
+  }
+
+  .preview-modal {
+    max-width: 95%;
+  }
+
+  .preview-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .preview-pantry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-actions {
+    flex-direction: column;
+  }
+
+  .preview-actions button {
+    width: 100%;
+  }
+}

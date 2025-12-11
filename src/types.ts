@@ -89,6 +89,7 @@ export interface StoreSuggestion {
 }
 
 // Level 1: Preset that can be saved and loaded from localStorage
+// Feature 12: Enhanced preset system with categories and descriptions
 export interface SavedPreset {
   id: string;
   name: string;
@@ -96,6 +97,8 @@ export interface SavedPreset {
   dietSettings: DietSettings;
   timelineSettings: TimelineSettings;
   savedAt: string;
+  category?: string; // e.g., "Budget Friendly", "Quick Meals", "Vegetarian", "Custom"
+  description?: string; // User notes about the preset
 }
 
 // App state combining all data
